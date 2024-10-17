@@ -11,45 +11,85 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k8@fvf(x+=%^c10@09&8fr2a4(*@wu_50s=p=##a(cyw#at_g2'
+# SECRET_KEY = 'django-insecure-k8@fvf(x+=%^c10@09&8fr2a4(*@wu_50s=p=##a(cyw#at_g2'
+
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
+
+# ALLOWED_HOSTS = [
+#     'localhost',
+#     '127.0.0.1',
+#     'kilote.loca.lt',  # Add this line
+# ]
+
+
+# LOGIN_URL = '/accounts/login/'  # URL to redirect if user is not logged in
+# LOGIN_REDIRECT_URL = '/dashboard'  # Where to redirect after successful login
+# LOGOUT_REDIRECT_URL = '/'
+
+# # SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+# # SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/dashboard/'
+# # SOCIAL_AUTH_LOGIN_URL = '/'
+
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '77vq2hiaje4mdm'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'WPL_AP1.BSEFXq3UaTpCrRNG.36eFFg=='
+# print("LinkedIn Client ID:", SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY)  # Debugging line
+# print("LinkedIn Client Secret:", SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET)  # Debugging line
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['openid', 'w_member_social', 'email', 'profile']
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_REDIRECT_URI = 'http://localhost:8000/social/auth/complete/linkedin/'  
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_AUTHORIZATION_URL = 'https://www.linkedin.com/oauth/v2/authorization'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_ACCESS_TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_USERINFO_URL = 'https://api.linkedin.com/v2/userinfo'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
+#     'sub',
+# ]
+
+
+# SOCIAL_AUTH_TWITTER_KEY = '8Vy7zJGSC3SFa5Rn71wR5daC5' 
+# SOCIAL_AUTH_TWITTER_SECRET = '0pFEnOPDqxHg1mYOLHjhoa7BBFhNFRxeTHIMC6kYf7KrU9dLRP' 
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/dashboard'  # Redirect after login
+# SOCIAL_AUTH_TWITTER_REDIRECT_URI = 'http://localhost:8000/social/twitter/callback/'
+
+from pathlib import Path
+from decouple import config, Csv
+import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'kilote.loca.lt',  # Add this line
-]
-
+# Allowing hosts to come from a CSV environment variable
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
 LOGIN_URL = '/accounts/login/'  # URL to redirect if user is not logged in
 LOGIN_REDIRECT_URL = '/dashboard'  # Where to redirect after successful login
 LOGOUT_REDIRECT_URL = '/'
 
-# SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/dashboard/'
-# SOCIAL_AUTH_LOGIN_URL = '/'
-
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '77vq2hiaje4mdm'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'WPL_AP1.BSEFXq3UaTpCrRNG.36eFFg=='
-print("LinkedIn Client ID:", SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY)  # Debugging line
-print("LinkedIn Client Secret:", SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET)  # Debugging line
+# LinkedIn OAuth2
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = config('SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY')
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = config('SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET')
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['openid', 'w_member_social', 'email', 'profile']
-SOCIAL_AUTH_LINKEDIN_OAUTH2_REDIRECT_URI = 'http://localhost:8000/social/auth/complete/linkedin/'  
+SOCIAL_AUTH_LINKEDIN_OAUTH2_REDIRECT_URI = 'http://localhost:8000/social/auth/complete/linkedin/'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_AUTHORIZATION_URL = 'https://www.linkedin.com/oauth/v2/authorization'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_ACCESS_TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_USERINFO_URL = 'https://api.linkedin.com/v2/userinfo'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
-    'sub',
-]
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = ['sub']
 
-
-SOCIAL_AUTH_TWITTER_KEY = '8Vy7zJGSC3SFa5Rn71wR5daC5' 
-SOCIAL_AUTH_TWITTER_SECRET = '0pFEnOPDqxHg1mYOLHjhoa7BBFhNFRxeTHIMC6kYf7KrU9dLRP' 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/dashboard'  # Redirect after login
+# Twitter OAuth
+SOCIAL_AUTH_TWITTER_KEY = config('SOCIAL_AUTH_TWITTER_KEY')
+SOCIAL_AUTH_TWITTER_SECRET = config('SOCIAL_AUTH_TWITTER_SECRET')
 SOCIAL_AUTH_TWITTER_REDIRECT_URI = 'http://localhost:8000/social/twitter/callback/'
-
+print("LinkedIn Client ID:", SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY)  # Debugging line
+print("LinkedIn Client Secret:", SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET)  # Debugging line
 
 AUTHENTICATION_BACKENDS = (
      'django.contrib.auth.backends.ModelBackend',
