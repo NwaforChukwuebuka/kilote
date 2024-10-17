@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>User Profile</h2>
+            <p>Welcome, {{ user.first_name }} {{ user.last_name }}</p>  <!-- Dynamically display user's full name -->
+        </div>
+
+        <div class="profile-info">
+            <div>
+                <label>Username:</label>
+                <p>{{ user.username }}</p>  <!-- Dynamically display username -->
+            </div>
+            <div>
+                <label>Email:</label>
+                <p>{{ user.email }}</p>  <!-- Dynamically display email -->
+            </div>
+        </div>
+
+        <div class="profile-info">
+            <div>
+                <label>Full Name:</label>
+                <p>{{ user.first_name }} {{ user.last_name }}</p>  <!-- Display full name -->
+            </div>
+            <div>
+                <label>Joined:</label>
+                <p>{{ user.date_joined|date:"F j, Y" }}</p>  <!-- Display formatted date joined -->
+            </div>
+        </div>
+
+        <a href="{% url 'edit_profile' %}" class="edit-profile-btn">Edit Profile</a>  <!-- Use Django's URL template tag -->
+        <a href="{% url 'logout' %}" class="logout-btn">Log Out</a>  <!-- Use Django's URL template tag -->
+    </div>
+</body>
+</html>

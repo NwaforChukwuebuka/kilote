@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: white; /* White text color */
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px; /* Adjusted width */
+            background-color: #18172F; /* Sidebar color */
+            padding: 20px;
+            height: 100vh;
+        }
+        .sidebar-brand h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar-menu li {
+            margin: 15px 0;
+            position: relative; /* For dropdown */
+        }
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+        .sidebar-menu a:hover {
+            background-color: #A321B9; /* Sidebar link hover color */
+        }
+        /* Enhanced dropdown styles */
+        .sidebar-menu li:hover .dropdown {
+            display: block; /* Show dropdown on hover */
+        }
+
+        .dropdown {
+            display: none; /* Initially hidden */
+            position: absolute;
+            background-color: #A321B9;
+            top: 100%;
+            left: 0;
+            z-index: 1;
+            width: 200px; /* Match the sidebar width */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+            transition: opacity 0.3s ease; /* Smooth appearance */
+        }
+
+        .dropdown li {
+            margin: 0; /* Remove margin for dropdown items */
+        }
+
+        .dropdown a {
+            padding: 10px;
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            color: white;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        .dropdown a:hover {
+            background-color: #c51277; /* Darker hover color */
+        }
+
+        /* Icons in dropdown */
+        .dropdown i {
+            margin-right: 8px; /* Space between icon and text */
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+            color: #18172F; 
+        }
+        .trial-info {
+            background-color: #A321B9; /* Trial info background color */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+        .scheduled-posts, .social-accounts {
+            background-color: #18172F; /* Section background color */
+            padding: 20px; /* Adjusted padding */
+            margin: 10px;
+            border-radius: 5px;
+            width: 48%; /* Adjust for spacing */
+            color: white; /* White text for sections */
+        }
+        .scheduled-posts h2, .social-accounts h2 {
+            margin-top: 0;
+        }
+        .create-post-btn, .connect-accounts-btn {
+            background-color: #cf0d9e; /* Button color */
+            color: white; /* White text for buttons */
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .create-post-btn:hover, .connect-accounts-btn:hover {
+            background-color: #A321B9; /* Button hover color */
+        }
+        .profile-image {
+            width: 30px; /* Circle size */
+            height: 30px;
+            border-radius: 50%; /* Make it a circle */
+            background-color: #A321B9; /* Background color for profile images */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px; /* Space between image and name */
+            font-size: 16px; /* Adjust font size for icons */
+        }
+
+        /* Remove bullets and space list items */
+        ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove default padding */
+        }
+        li {
+            margin-bottom: 10px; /* Add space between list items */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2>Note: add Logo </h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#">Home</a></li>
+            <li>
+                <a href="#">Connect Accounts</a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'social:begin' 'linkedin-oauth2' %}"><i class="fab fa-linkedin"></i>Connect LinkedIn</a></li>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-tiktok"></i> TikTok</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Create Post</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Post Ads</a></li>
+            <li><a href="#">More</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Welcome, {{ user.username }}!</h1> <!-- Display logged-in user -->
+            <div class="trial-info">
+                <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Log Out</a>
+            </div>
+        </header>
+
+        <div class="content">
+            <section class="scheduled-posts">
+                <h2>Scheduled posts</h2>
+                <ul>
+                    <li>Nigeria will be great</li>
+                    <li>Today's News is out</li>
+                    <li>Hello Twitter</li>
+                </ul>
+                <div class="no-posts">
+                    <p>No scheduled posts</p>
+                    <button class="create-post-btn">Create a post</button>
+                </div>
+            </section>
+
+            <section class="social-accounts">
+                <h2>Social Accounts</h2>
+                <ul>
+                    {% for platform, details in social_connections.items %}
+                        <li>
+                            {% if details.connected %}
+                                <div class="profile-image">
+                                    <i class="fab fa-{{ platform }}"></i>
+                                </div> 
+                                {{ platform|title }} Connected as {{ details.name }}
+                                <form method="post" action="{% url 'unlink_social_account' platform %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="unlink-btn" style="background:none; border:none; color:#A321B9; cursor:pointer; margin-left:10px;">Unlink</button>
+                                </form>
+                            {% else %}
+                                <div class="profile-image">
+                                    <i class="fab fa-{{ platform }}"></i>
+                                </div> 
+                                {{ platform|title }} not connected
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <button class="connect-accounts-btn">Connect more accounts</button>
+            </section>
+            
+            
+        </div>
+
+        <form method="POST" action="{% url 'linkedin_post' %}">
+            {% csrf_token %}
+            <textarea name="message" placeholder="Write your LinkedIn post here"></textarea>
+            <button type="submit">Post to LinkedIn</button>
+        </form>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        
+    </div>
+</body>
+</html>

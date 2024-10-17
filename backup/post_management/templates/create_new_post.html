@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: white; /* White text color */
+            background-color: #18172F; /* Background color */
+            margin: 0;
+            padding: 20px;
+            display: flex; /* Center the content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Full viewport height */
+        }
+        .container {
+            background-color: #363460; /* Container background color */
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px; /* Adjust width as needed */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
+        }
+        h1 {
+            color: #e59c06; /* Title color */
+            margin-bottom: 20px;
+            text-align: center; /* Center the title */
+        }
+        .social-account-selection {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .selected-account {
+            display: inline-block;
+            background-color: #A321B9; /* Selected account color */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+            position: relative;
+        }
+        .remove-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            margin-bottom: 8px;
+            display: block;
+            color: #d504f8; /* Label color */
+        }
+            
+        .form-group select { 
+            color: rgb(0, 0, 0); /* Input text color */
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 6px;
+            border-radius: 5px;
+            border: 1px solid #A321B9; /* Input border color */
+            /* background-color: #18172F; Input background color */
+            /* color: black; Input text color */
+        }
+        .form-group button {
+            background-color: #A321B9; /* Button color */
+            color: white; /* Button text color */
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%; /* Full width for the button */
+        }
+        .form-group button:hover {
+            background-color: #363460; /* Button hover color */
+        }
+        .media-upload {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create New Post</h1>
+        
+        <div class="social-account-selection" id="selected-accounts">
+            <!-- Selected social media accounts will appear here -->
+        </div>
+        
+        <form id="post-form" action="{% url 'create_post' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="social-media-select">Select Social Media Accounts:</label>
+                <select id="social-media-select" onchange="addAccount()">
+                    <option value="">Select an account</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="TikTok">TikTok</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="post-content">Post Content:</label>
+                <textarea id="post-content" name="content" rows="5" placeholder="Write your post here..."></textarea>
+            </div>
+
+            <div class="media-upload form-group">
+                <label for="media">Upload Media (optional):</label>
+                <input type="file" id="media" name="media">
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Create Post</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const selectedAccounts = [];
+
+        function addAccount() {
+            const select = document.getElementById('social-media-select');
+            const account = select.value;
+
+            if (account && !selectedAccounts.includes(account)) {
+                selectedAccounts.push(account);
+                updateSelectedAccounts();
+                select.value = ""; // Reset select input
+            }
+        }
+
+        function removeAccount(account) {
+            const index = selectedAccounts.indexOf(account);
+            if (index > -1) {
+                selectedAccounts.splice(index, 1);
+                updateSelectedAccounts();
+            }
+        }
+
+        function updateSelectedAccounts() {
+            const selectedAccountsDiv = document.getElementById('selected-accounts');
+            selectedAccountsDiv.innerHTML = ""; // Clear previous accounts
+
+            selectedAccounts.forEach(account => {
+                const accountDiv = document.createElement('div');
+                accountDiv.className = 'selected-account';
+                accountDiv.innerText = account;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.innerText = '×'; // Remove button
+                removeBtn.onclick = function() { removeAccount(account); };
+                
+                accountDiv.appendChild(removeBtn);
+                selectedAccountsDiv.appendChild(accountDiv);
+            });
+        }
+    </script>
+</body>
+</html>
