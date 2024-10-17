@@ -15,7 +15,6 @@ dbus-python==1.2.18
 defusedxml==0.8.0rc2
 distlib==0.3.4
 distro==1.7.0
-distro-info==1.1+ubuntu0.1
 dj-rest-auth==6.0.0
 Django==5.1.1
 django-allauth==65.0.2
@@ -46,7 +45,6 @@ pycparser==2.22
 PyGObject==3.42.1
 PyJWT==2.9.0
 pyparsing==2.4.7
-python-apt==2.4.0+ubuntu2
 python-dateutil==2.9.0.post0
 python-decouple==3.8
 python3-openid==3.2.0
