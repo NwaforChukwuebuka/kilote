@@ -274,17 +274,53 @@
             
         </div>
 
-        <form method="POST" action="{% url 'linkedin_post' %}" class="post-form">
+        <form id="combined-post-form" method="POST" class="post-form">
             {% csrf_token %}
-            <textarea name="message" placeholder="Write your LinkedIn post here"></textarea>
+            <textarea id="message" name="message" placeholder="Write your post here"></textarea>
             <button type="submit">Post</button>
         </form>
         
-        <form method="POST" action="{% url 'post_to_twitter_view' %}" class="post-form">
-            {% csrf_token %}
-            <textarea name="message" placeholder="Write your tweet here"></textarea>
-            <button type="submit">Post</button>
-        </form>
+        <script>
+            document.getElementById('combined-post-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                
+                // Get the value from the textarea
+                const message = document.getElementById('message').value;
+        
+                // Create a FormData object to send the message
+                const formDataLinkedIn = new FormData();
+                formDataLinkedIn.append('message', message); // Adjust based on your LinkedIn view
+                formDataLinkedIn.append('csrfmiddlewaretoken', '{{ csrf_token }}'); // Include CSRF token
+        
+                const formDataTwitter = new FormData();
+                formDataTwitter.append('message', message); // Adjust based on your Twitter view
+                formDataTwitter.append('csrfmiddlewaretoken', '{{ csrf_token }}'); // Include CSRF token
+        
+                // Make AJAX calls to both endpoints
+                Promise.all([
+                    fetch('{% url "linkedin_post" %}', {
+                        method: 'POST',
+                        body: formDataLinkedIn
+                    }),
+                    fetch('{% url "post_to_twitter_view" %}', {
+                        method: 'POST',
+                        body: formDataTwitter
+                    })
+                ])
+                .then(responses => {
+                    return Promise.all(responses.map(response => response.json()));
+                })
+                .then(data => {
+                    console.log('Both posts submitted successfully:', data);
+                    // Optionally, show a success message or redirect
+                })
+                .catch(error => {
+                    console.error('Error submitting posts:', error);
+                    // Optionally, show an error message
+                });
+            });
+        </script>
+        
         
 
         {% if error %}

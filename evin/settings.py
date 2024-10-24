@@ -42,6 +42,8 @@ SOCIAL_AUTH_TWITTER_SECRET = config('SOCIAL_AUTH_TWITTER_SECRET')
 SOCIAL_AUTH_TWITTER_REDIRECT_URI = 'http://localhost:8000/social/twitter/callback/'
 print("LinkedIn Client ID:", SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY)  # Debugging line
 print("LinkedIn Client Secret:", SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET)  # Debugging line
+print("LinkedIn Client ID:", SOCIAL_AUTH_TWITTER_KEY)  # Debugging line
+print("LinkedIn Client Secret:", SOCIAL_AUTH_TWITTER_SECRET)  # Debugging line
 
 AUTHENTICATION_BACKENDS = (
      'django.contrib.auth.backends.ModelBackend',
